@@ -7,11 +7,6 @@ import (
 )
 
 func main() {
-	execer := &examples.ExecerImpl{}
-	execer.A()
-	execer.B()
-	execer.C()
-	// Person Example
 	examples.GoPerson()
 	examples.GoIntTree()
 	examples.GoEmbedded()
