@@ -27,7 +27,11 @@ func GoPerson() {
 	person2.AddAge()
 	fmt.Println(person2.Age)
 
-	person3 := Person1{Age: 10}
+	person3 := &Person1{Age: 10}
 	person3.AddAge()
 	fmt.Println(person3.Age)
+
+	person4 := &Person2{Age: 10}
+	person4.AddAge()
+	fmt.Println(person4.Age)
 }
