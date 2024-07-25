@@ -1,9 +1,10 @@
 package demo_command
 
 import (
-	"fmt"
+	"errors"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -14,21 +15,30 @@ type MockCommandExecutor struct {
 
 // 模擬 Execute 方法
 func (m *MockCommandExecutor) Execute(args []string) ([]byte, error) {
-	fmt.Println("I am argsargsargs", args)
 	argsCalled := m.Called(args)
-	fmt.Println("I am argsCalledargsCalledargsCalled", argsCalled)
-
 	return argsCalled.Get(0).([]byte), argsCalled.Error(1)
 }
 
-// 測試 CommandService 的 HelloCommand 方法
 func TestHelloCommand(t *testing.T) {
 	mockExecutor := new(MockCommandExecutor)
-	mockExecutor.On("Execute", []string{"/C", "echo Hello World"}).Return([]byte("Hello World\n"), nil)
+	mockExecutor.On("Execute", mock.AnythingOfType("[]string")).Return([]byte("Hello World\n"), nil)
 
 	commandService := CommandService{executor: mockExecutor}
 
-	commandService.helloCommand()
+	result, err := commandService.helloCommand()
+	assert.Equal(t, true, result)
+	assert.Equal(t, nil, err)
+	mockExecutor.AssertExpectations(t)
+}
 
+func TestHelloCommandError(t *testing.T) {
+	mockExecutor := new(MockCommandExecutor)
+	mockExecutor.On("Execute", []string{"/C", "echo", "hello", "world"}).Return([]byte("Hello World\n"), errors.New("mock error"))
+
+	commandService := CommandService{executor: mockExecutor}
+
+	result, err := commandService.helloCommand()
+	assert.Equal(t, false, result)
+	assert.Equal(t, errors.New("mock error"), err)
 	mockExecutor.AssertExpectations(t)
 }
