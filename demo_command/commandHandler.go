@@ -2,14 +2,16 @@ package demo_command
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 )
 
 func CommandHandler() http.Handler {
-	fmt.Println("aaaaaaa")
 	cs := CommandService{executor: CommandExecutor{}}
-	cs.helloCommand()
+	cs.helloCommand(CmdParams{
+		FirstName: "Louis",
+		LastName:  "Chen",
+		Gender:    "sir",
+	})
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		// 檢查 HTTP 方法是否為 GET
 		if r.Method != http.MethodGet {

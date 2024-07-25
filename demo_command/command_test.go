@@ -25,7 +25,11 @@ func TestHelloCommand(t *testing.T) {
 
 	commandService := CommandService{executor: mockExecutor}
 
-	result, err := commandService.helloCommand()
+	result, err := commandService.helloCommand(CmdParams{
+		FirstName: "Louis",
+		LastName:  "Chen",
+		Gender:    "sir",
+	})
 	assert.Equal(t, true, result)
 	assert.Equal(t, nil, err)
 	mockExecutor.AssertExpectations(t)
@@ -37,7 +41,11 @@ func TestHelloCommandError(t *testing.T) {
 
 	commandService := CommandService{executor: mockExecutor}
 
-	result, err := commandService.helloCommand()
+	result, err := commandService.helloCommand(CmdParams{
+		FirstName: "Louis",
+		LastName:  "Chen",
+		Gender:    "sir",
+	})
 	assert.Equal(t, false, result)
 	assert.Equal(t, errors.New("mock error"), err)
 	mockExecutor.AssertExpectations(t)

@@ -5,10 +5,12 @@ import (
 	"net/http"
 )
 
+// net/http 對於handler的接口定義
 type Handler interface {
 	ServeHTTP(http.ResponseWriter, *http.Request)
 }
 
+// net/http 的http.HandlerFunc 自定義
 type HandlerFunc func(http.ResponseWriter, *http.Request)
 
 func (f HandlerFunc) ServeHTTP(w http.ResponseWriter, r *http.Request) {
